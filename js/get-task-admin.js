@@ -1,6 +1,6 @@
-import { endpointGetRoles, endpointDeleteByIdRoles } from "../js/url.js";
+import { endpointGetTasksAdmin } from "../js/url.js";
 function fetchDataFromEndpoint() {
-  const url = endpointGetRoles;
+  const url = endpointGetTasksAdmin;
   const token = localStorage.getItem("LOGIN") || "";
 
   if (token) {
@@ -52,32 +52,45 @@ function formatDate(dateString) {
   return `${day}/${month}/${year}`;
 }
 
-function updateTable(users) {
+function updateTable(tasks) {
   const tableBody = document.querySelector(".table tbody");
   tableBody.innerHTML = "";
-  users.forEach((user) => {
-    const formattedDueDate = formatDate(user.due_date);
+  tasks.forEach((task) => {
+    const formattedDueDate = formatDate(task.due_date);
 
     const row = `<tr>
-      <td><i class="fab fa-bootstrap fa-lg text-primary me-3"></i><strong>${user.id_role}</strong></td>
-      <td>${user.nama}</td>
-      
-      <td>
-        <div class="dropdown">
-          <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-            <i class="bx bx-dots-vertical-rounded"></i>
-          </button>
-          <div class="dropdown-menu">
-          <a class="dropdown-item" href="javascript:void(0);" onclick="edituser('${user.id_role}')"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-          <a class="dropdown-item" href="javascript:void(0);" onclick="deleteuser('${user.id_role}')"><i class="bx bx-trash me-1"></i> Delete</a>
+    <td><i class="fab fa-bootstrap fa-lg text-primary me-3"></i><strong>${
+      task.nama
+    }</strong></td>
+        <td><i class="fab fa-bootstrap fa-lg text-primary me-3"></i><strong>${
+          task.judul
+        }</strong></td>
+        <td>${task.deskripsi}</td>
+        <td>${formattedDueDate}</td>
+        <td><span class="badge bg-label-${
+          task.completed ? "success" : "warning"
+        } me-1">${task.completed ? "Selesai" : "Pending"}</span></td>
+  
+        <td>
+          <div class="dropdown">
+            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+              <i class="bx bx-dots-vertical-rounded"></i>
+            </button>
+            <div class="dropdown-menu">
+            <a class="dropdown-item" href="javascript:void(0);" onclick="editTask('${
+              task.id_task
+            }')"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+            <a class="dropdown-item" href="javascript:void(0);" onclick="deleteTask('${
+              task.id_task
+            }')"><i class="bx bx-trash me-1"></i> Delete</a>
+            </div>
           </div>
-        </div>
-      </td>
-    </tr>`;
+        </td>
+      </tr>`;
     tableBody.innerHTML += row;
   });
-  window.deleteuser = function (id_role) {
-    const url = `${endpointDeleteByIdRoles}${id_role}`; // Sesuaikan dengan basis URL API Anda
+  window.deleteTask = function (taskId) {
+    const url = `${endpointGetIdTask}/delete?id_task=${taskId}`; // Sesuaikan dengan basis URL API Anda
     const token = localStorage.getItem("LOGIN");
 
     Swal.fire({
@@ -96,7 +109,7 @@ function updateTable(users) {
             "Content-Type": "application/json",
             LOGIN: ` ${token}`,
           },
-          body: JSON.stringify({ id_role: id_role }),
+          body: JSON.stringify({ id_task: taskId }),
         })
           .then((response) => {
             if (!response.ok) {
@@ -120,9 +133,9 @@ function updateTable(users) {
     });
   };
 }
-window.edituser = function (userId) {
-  localStorage.setItem("currentroleId", userId);
-  window.location.href = "edit-role.html";
+window.editTask = function (taskId) {
+  localStorage.setItem("currentTaskId", taskId);
+  window.location.href = "edit-task-admin.html";
 };
 
 fetchDataFromEndpoint();

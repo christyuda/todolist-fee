@@ -65,7 +65,9 @@ document
     const status = document.getElementById("status").value;
 
     try {
-      await postData(judul, deskripsi, due_date, status);
+      const isCompleted = status === "true";
+
+      await postData(judul, deskripsi, due_date, isCompleted);
     } catch (error) {
       console.error("Error updating task:", error);
       Swal.fire({
@@ -76,7 +78,7 @@ document
     }
   });
 
-async function postData(judul, deskripsi, due_date, status) {
+async function postData(judul, deskripsi, due_date, isCompleted) {
   const taskId = localStorage.getItem("currentTaskId");
   const url = `http://127.0.0.1:3000/task/update?id_task=${taskId}`;
   const token = localStorage.getItem("LOGIN");
@@ -85,7 +87,7 @@ async function postData(judul, deskripsi, due_date, status) {
     judul: judul,
     deskripsi: deskripsi,
     due_date: due_date,
-    completed: status,
+    completed: isCompleted,
   };
 
   const response = await fetch(url, {
@@ -115,7 +117,7 @@ function handleResponse(response) {
       cancelButtonText: "Tetap di Halaman Ini",
     }).then((result) => {
       if (result.isConfirmed) {
-        window.location.href = "dashboard.html";
+        window.location.href = "dashboard-admin.html";
       }
     });
   });

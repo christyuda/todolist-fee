@@ -1,4 +1,4 @@
-import { endpointGetTasks, endpointGetIdTask } from "../js/url.js";
+import { endpointGetTasks } from "../js/url.js";
 function fetchDataFromEndpoint() {
   const url = endpointGetTasks;
   const token = localStorage.getItem("LOGIN") || "";
@@ -20,7 +20,11 @@ function fetchDataFromEndpoint() {
         return response.json();
       })
       .then((data) => {
-        updateTable(data.data);
+        if (!data.data || data.data.length === 0) {
+          updateTable([]);
+        } else {
+          updateTable(data.data);
+        }
       })
       .catch((error) => {
         console.error("Error:", error);

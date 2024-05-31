@@ -1,4 +1,5 @@
-export const endpointGetTasks = "http://127.0.0.1:3000/tasks";
+export const endpointGetTasks = "http://127.0.0.1:3000/task/taskuser";
+export const endpointGetTasksAdmin = "http://127.0.0.1:3000/tasks";
 export const endpointGetIdTask = "http://127.0.0.1:3000/task";
 export const endpointLogin = "http://127.0.0.1:3000/login";
 export const endpointRegister = "http://127.0.0.1:3000/register";
