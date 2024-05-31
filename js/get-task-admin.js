@@ -57,6 +57,7 @@ function updateTable(tasks) {
   tableBody.innerHTML = "";
   tasks.forEach((task) => {
     const formattedDueDate = formatDate(task.due_date);
+    const isCompleted = task.completed === "true";
 
     const row = `<tr>
     <td><i class="fab fa-bootstrap fa-lg text-primary me-3"></i><strong>${
@@ -68,8 +69,9 @@ function updateTable(tasks) {
         <td>${task.deskripsi}</td>
         <td>${formattedDueDate}</td>
         <td><span class="badge bg-label-${
-          task.completed ? "success" : "warning"
-        } me-1">${task.completed ? "Selesai" : "Pending"}</span></td>
+          isCompleted ? "success" : "warning"
+        } me-1">${isCompleted ? "Selesai" : "Pending"}</span></td>
+
   
         <td>
           <div class="dropdown">
