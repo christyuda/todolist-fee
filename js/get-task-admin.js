@@ -1,4 +1,4 @@
-import { endpointGetTasksAdmin } from "../js/url.js";
+import { endpointGetTasksAdmin, endpointGetIdTask } from "../js/url.js";
 function fetchDataFromEndpoint() {
   const url = endpointGetTasksAdmin;
   const token = localStorage.getItem("LOGIN") || "";
